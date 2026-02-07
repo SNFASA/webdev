@@ -8,7 +8,6 @@ include 'backend.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script type="text/javascript" src="script.js"></script>
 </head>
 <body>
     <h1>Welcome to the Sample HTML Document</h1>

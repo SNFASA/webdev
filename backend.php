@@ -74,6 +74,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // --- CASE B: INSERT (If no edit_id is present) ---
     else {
+
+        // simple way insert 
+        /*$sql = "INSERT INTO user (username, firstname, lastname, phone, email, password) VALUES ('$username', '$firstname', '$lastname', '$phone', '$email', '".password_hash($_POST['password'], PASSWORD_DEFAULT)."')";
+        if (mysqli_query($conn, $sql)) {
+            echo "<script>
+                    alert('New record created successfully!');
+                    window.location.href='index.php';
+                  </script>";
+            exit();
+        } else {
+            echo "Insert Error: " . mysqli_error($conn);
+        }
+        */
+        // PDO way insert
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
         $stmt = $conn->prepare("INSERT INTO user (username, firstname, lastname, phone, email, password) VALUES (?, ?, ?, ?, ?, ?)");
@@ -99,4 +113,18 @@ if (!empty($edit_id)) {
     $fetch_result = mysqli_query($conn, $fetch_sql);
     $row = mysqli_fetch_assoc($fetch_result);
 }
+
+
+/**
+ * GET - Retrieve data from the server
+ * POST - Send data to the server to create/update a resource
+ * PUT - Update a resource on the server
+ * DELETE - Delete a resource on the server
+ * PATCH - Partially update a resource on the server
+ * HEAD - Retrieve metadata from the server
+ * OPTIONS - Describe the communication options for the target resource
+ * CONNECT - Establish a tunnel to the server
+ * TRACE - Perform a message loop-back test along the path to the target resource
+ */
 ?>
+
