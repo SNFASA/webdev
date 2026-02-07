@@ -44,6 +44,7 @@ include 'backend.php';
             <th>Last Name</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>Action</th>
         </tr>
         <?php
         $sql = "SELECT * FROM user";
@@ -56,10 +57,14 @@ include 'backend.php';
                         <td>".$row['lastname']."</td>
                         <td>".$row['phone']."</td>
                         <td>".$row['email']."</td>
+                        <td>
+                            <a href='edit.php?edit_id=".$row['id']."' class='btn-edit'>Edit</a> |
+                            <a href='backend.php?delete_id=".$row['id']."' class='btn-delete' onclick='return confirm(\"Are you sure you want to delete this user?\")'>Delete</a>
+                            </td>
                     </tr>";
             }
         }else{
-            echo "<tr><td colspan='5'>No records found</td></tr>";
+            echo "<tr><td colspan='6'>No records found</td></tr>";
         }
         ?>
     </table>
