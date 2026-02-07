@@ -19,73 +19,84 @@ try{
     echo "Connection failed:" . $e -> getMessage();
 }
 */
+// 2. Capture URL Parameters (GET)
+$edit_id = $_GET['edit_id'] ?? '';
+$delete_id = $_GET['delete_id'] ?? '';
 
-if ( $_SERVER["REQUEST_METHOD"] == "POST"){ // check if form is submitted
-    // cupture data from form
-    $username = $_POST['username'];
-    $firstname = $_POST['firstname'];
-    $lastname = $_POST['lastname'];
-    $phone = $_POST['phone'];
-    $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-    
-    /*simple way
-    $sql = "INSERT INTO user (username, firstname, lastname, phone, email, password)VALUES('$username', '$firstname', '$lastname', '$phone', '$email', '$password')";
-    $result = mysqli_query($conn, $sql);
-    */
-    // safer untuk elak sql injection
-    $sql = $conn->prepare("INSERT INTO user (username, firstname, lastname, phone, email, password) VALUES (?, ?, ?, ?, ?, ?)");
-    $sql->bind_param("ssssss", $username, $firstname, $lastname, $phone, $email, $password);
-    $result = $sql->execute();
-    
-    if($result){
-        echo"<script>
-                alert('New record created successfully!');
-                window.location.href='index.php'; // Redirect back to form
-            </script>";
-    }else{
-        echo "Error: ". $sql ."<br>". mysqli_error($conn);
-    }
-}
-
-$delete_id = isset($_GET['delete_id']) ? $_GET['delete_id'] : '';
-if(!empty($delete_id)){
+// 3. HANDLE DELETE ACTION
+if (!empty($delete_id)) {
+    // Sanitize input to prevent SQL Injection
+    $delete_id = mysqli_real_escape_string($conn, $delete_id);
     $sql = "DELETE FROM user WHERE id = '$delete_id'";
-    $result = mysqli_query($conn, $sql);
-    if($result){
-        echo"<script>
+    
+    if (mysqli_query($conn, $sql)) {
+        echo "<script>
                 alert('Record deleted successfully!');
-                window.location.href='index.php'; // Redirect back to form
-            </script>";
-    }else{
-        echo "Error: ". mysqli_error($conn);
+                window.location.href='index.php';
+              </script>";
+        exit();
+    } else {
+        echo "Error deleting: " . mysqli_error($conn);
     }
 }
-if(!empty($edit_id)){
-    if($_SERVER["REQUEST_METHOD"] == "POST"){
-        $username = mysqli_real_escape_string($conn, $_POST['username']);
-        $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
-        $lastname = mysqli_real_escape_string($conn, $_POST['lastname']);
-        $phone = mysqli_real_escape_string($conn, $_POST['phone']);
-        $email = mysqli_real_escape_string($conn, $_POST['email']);
 
-        // Only update password if the user actually typed a new one
-        if(!empty($_POST['password'])){
+// 4. HANDLE FORM SUBMISSIONS (POST)
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
+    // Capture and Sanitize form data
+    $username  = mysqli_real_escape_string($conn, $_POST['username']);
+    $firstname = mysqli_real_escape_string($conn, $_POST['firstname']);
+    $lastname  = mysqli_real_escape_string($conn, $_POST['lastname']);
+    $phone     = mysqli_real_escape_string($conn, $_POST['phone']);
+    $email     = mysqli_real_escape_string($conn, $_POST['email']);
+
+    // --- CASE A: UPDATE (If edit_id is present) ---
+    if (!empty($edit_id)) {
+        
+        // Check if password was changed
+        if (!empty($_POST['password'])) {
             $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-            $sql = "UPDATE user SET username='$username', firstname='$firstname', lastname='$lastname', phone='$phone', email='$email', password='$password' WHERE id='$edit_id'";
+            $query = "UPDATE user SET username='$username', firstname='$firstname', lastname='$lastname', phone='$phone', email='$email', password='$password' WHERE id='$edit_id'";
         } else {
-            $sql = "UPDATE user SET username='$username', firstname='$firstname', lastname='$lastname', phone='$phone', email='$email' WHERE id='$edit_id'";
+            $query = "UPDATE user SET username='$username', firstname='$firstname', lastname='$lastname', phone='$phone', email='$email' WHERE id='$edit_id'";
         }
 
-        $result = mysqli_query($conn, $sql);
-        if($result){
-            echo"<script>
+        if (mysqli_query($conn, $query)) {
+            echo "<script>
                     alert('Record updated successfully!');
-                    window.location.href='index.php'; // Redirect back to form
-                </script>";
-        }else{
-            echo "Error: ". mysqli_error($conn);
+                    window.location.href='index.php';
+                  </script>";
+            exit();
+        } else {
+            echo "Update Error: " . mysqli_error($conn);
+        }
+    } 
+    
+    // --- CASE B: INSERT (If no edit_id is present) ---
+    else {
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+        $stmt = $conn->prepare("INSERT INTO user (username, firstname, lastname, phone, email, password) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("ssssss", $username, $firstname, $lastname, $phone, $email, $password);
+        
+        if ($stmt->execute()) {
+            echo "<script>
+                    alert('New record created successfully!');
+                    window.location.href='index.php';
+                  </script>";
+            exit();
+        } else {
+            echo "Insert Error: " . $stmt->error;
         }
     }
 }
+
+// 5. FETCH DATA FOR EDIT FORM (If edit_id is present)
+// This part is used by edit.php to populate the input values
+$row = null;
+if (!empty($edit_id)) {
+    $fetch_sql = "SELECT * FROM user WHERE id = '" . mysqli_real_escape_string($conn, $edit_id) . "'";
+    $fetch_result = mysqli_query($conn, $fetch_sql);
+    $row = mysqli_fetch_assoc($fetch_result);
+}
+?>
