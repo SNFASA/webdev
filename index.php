@@ -6,7 +6,7 @@ include 'backend.php';
     <title>Sample HTML Document</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="script.js"></script>
 </head>
@@ -35,5 +35,34 @@ include 'backend.php';
 
         <input type="submit" value="Submit"/>
     </form>
+
+    <h2> Data User</h2>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+        </tr>
+        <?php
+        $sql = "SELECT * FROM user";
+        $result = mysqli_query($conn, $sql);
+        if(mysqli_num_rows($result) > 0){
+            while($row = mysqli_fetch_assoc($result)){
+                echo "<tr>
+                        <td>".$row['username']."</td>
+                        <td>".$row['firstname']."</td>
+                        <td>".$row['lastname']."</td>
+                        <td>".$row['phone']."</td>
+                        <td>".$row['email']."</td>
+                    </tr>";
+            }
+        }else{
+            echo "<tr><td colspan='5'>No records found</td></tr>";
+        }
+        ?>
+    </table>
+
 </body>
 </html>

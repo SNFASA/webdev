@@ -20,7 +20,8 @@ try{
 }
 */
 
-if ( $_SERVER["REQUEST_METHOD"] == "POST"){
+if ( $_SERVER["REQUEST_METHOD"] == "POST"){ // check if form is submitted
+    // cupture data from form
     $username = $_POST['username'];
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
@@ -47,3 +48,5 @@ if ( $_SERVER["REQUEST_METHOD"] == "POST"){
         echo "Error: ". $sql ."<br>". mysqli_error($conn);
     }
 }
+
+
