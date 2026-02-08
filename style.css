@@ -1,3 +1,25 @@
+/*
+Preccise Measurement Units 
+px - smallest unit of measurement on a screen , ideal for digital displays
+pt - used mainly in typography, 1pt = 1/72 of an inch, ideal for print media
+mm - millimeters, a smaller unit in the matric system, useful for precise physical dimensions like print work
+in - inches, larger unit in the imperial system, often used for physical dimensions
+%  -  saize relative to the parent element, useful for responsive designs and scaling
+em - relative to the font-size of the element, useful for scalable and responsive typography
+vh - viewport height, 1vh = 1% of the viewport's height, useful for responsive layouts
+vm - viewport width, 1vw = 1% of the viewport's width, useful for responsive layouts
+
+
+Box Model Concepts
+Content: The actual content of the element, such as text or images.
+Padding: The space between the content and the border. It creates space inside the element.
+Border: The edge of the element, which can have a width, style, and color.
+Margin: The space outside the border, creating distance between the element and other elements.
+
+*/
+
+
+
 /* General Page Styling */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
