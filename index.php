@@ -70,6 +70,9 @@ include 'backend.php';
     <button id="clickMeBtn">Click Me</button> <!-- using Event Listener (id) -->
     <button onclick="ConfirmBtn()">Confirmation button</button> <!-- Event Handling -->
     <button id="promtsBtn">Prompts Button</button>
+    <a href="EX.php">Go to EX.php</a>
+    <a href="EX.js">Go to EX.js</a>
+    <a href="EX.html">Go to EX.html</a>
     <script>
         // Click me button
         const button = document.getElementById("clickMeBtn");
