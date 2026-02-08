@@ -4,8 +4,8 @@
  */
 
 /**
- * let - is used to declare a block-scoped variable
- * const - is used to declare a block-scoped constant variable
+ * let - is used to declare a block-scoped variable if the data can changes
+ * const - is used to declare a block-scoped constant variable if the data will not change
  * var - is used to declare a function-scoped variable (not recommended)
  */
 let userData = [
@@ -36,6 +36,8 @@ greetUser();
 // the function is useful for SENDING data to a web server
 obj_data = JSON.stringify(userData);
 console.log(obj_data);
+
+
 // JSON.parse is used to convert JSON string back to JavaScript object
 // the output will be a JAVASCRIPT OBJECT
 // the function is useful for RECEIVING data from a web server

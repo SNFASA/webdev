@@ -67,6 +67,32 @@ include 'backend.php';
         }
         ?>
     </table>
+    <button id="clickMeBtn">Click Me</button> <!-- using Event Listener (id) -->
+    <button onclick="ConfirmBtn()">Confirmation button</button> <!-- Event Handling -->
+    <button id="promtsBtn">Prompts Button</button>
+    <script>
+        // Click me button
+        const button = document.getElementById("clickMeBtn");
+        button.addEventListener("click", function() {
+            alert("Button was clicked!");
+        });
+
+        // Confirmation button
+        function ConfirmBtn(){
+            const userResponse = confirm("Do you want to proceed?");
+            if (userResponse){
+                alert("You chose to proceed.");
+            } else {
+                alert("You canceled the action.");
+            }
+        }
+
+        const button2 = document.getElementById("promtsBtn");
+        button2.addEventListener("click", function(){
+            const userInput = prompt("Please enter your name:");
+            alert("Hello, " + userInput + "!");
+        })
+    </script>
 
 </body>
 </html>
