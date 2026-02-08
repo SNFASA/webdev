@@ -1,6 +1,7 @@
 CREATE DATABASE IF NOT EXISTS db;
 USE db;
 
+/*Create table*/
 CREATE TABLE IF NOT EXISTS USER (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(100) NOT NULL UNIQUE,
@@ -11,3 +12,47 @@ CREATE TABLE IF NOT EXISTS USER (
     password VARCHAR(255) NOT NULL,
 
 );
+
+/*Insert data*/
+INSERT INTO USER(username, firstname, lastname, phone, email, password) VALUES ('john_doe', 'John', 'Doe', '1234567890', 'gI7Y3@example.com', 'password123');
+
+/*Select data all*/
+SELECT * FROM USER;
+
+/*Select data specific*/
+ SELECT username , email  FROM USER WHERE id = 1; ALTER
+
+/* select data with condition */
+SELECT  firstname, lastname FORM USER WHERE email = 'gI7Y3@example.com' AND phone = '1234567890' OR phone = '0987654321';
+
+SELECT * FROM USER WHERE username LIKE 'john%';
+
+SELECT * FROM USER WHERE email IS NOT NULL;
+SELECT * FROM USER WHERE phone IS NULL;
+
+/* DISTINCR  FOR ONLY DIFFRENT VALUE*/
+SELECT DISTINCT username FROM USER;
+
+/* ORDER BY */
+SELECT * FROM USER ORDER BY firstname ASC; /* ASC - Ascending order (A to Z, 0 to 9) */
+SELECT * FROM USER ORDER BY lastname DESC; /* DESC - Descending order (Z to A, 9 to 0) */
+
+/*  JOINTS */
+-- INNER JOIN
+SELECT username FROM USER INNER JOIN ORDERS ON USER.id = ORDERS.user_id; -- only matching records from both tables
+
+-- LEFT JOIN
+SELECT username FROM USER LEFT JOIN ORDERS ON USER.id = ORDERS.user_id; -- all records from the left table (USER) and matching records from the right table (ORDERS)
+
+-- RIGHT JOIN
+SELECT username FROM USER RIGHT JOIN ORDERS ON USER.id = ORDERS.user_id; -- all records from the right table (ORDERS) and matching records from the left table (USER)
+
+-- FULL JOIN
+SELECT username FROM USER FULL JOIN ORDERS ON USER.id = ORDERS.user_id; -- all records when there is a match in either left (USER) or right (ORDERS) table
+
+
+-- UPDATE
+UPDATE USER SET username='jane_doe' WHERE id=1;
+
+-- DELETE
+DELETE FROM USER WHERE id=1;
